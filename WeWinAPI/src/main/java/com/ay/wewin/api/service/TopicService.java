@@ -5,19 +5,19 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ay.wewin.api.model.Subject;
-import com.ay.wewin.api.repository.ISubjectRepository;
+import com.ay.wewin.api.model.Topic;
+import com.ay.wewin.api.repository.ITopicRepository;
 import com.ay.wewin.api.service.common.AbstractServices;
 
 @Service
 @Transactional
-public class SubjectService extends AbstractServices<Subject>implements ISubjectService{
+public class TopicService extends AbstractServices<Topic>implements ITopicService{
 
 	@Autowired
-	ISubjectRepository dao;
+	ITopicRepository dao;
 	
 	@Override
-	protected PagingAndSortingRepository<Subject, String> getDao() {
+	protected PagingAndSortingRepository<Topic, String> getDao() {
 		return dao;
 	}
 

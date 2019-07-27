@@ -21,28 +21,28 @@ import com.ay.wewin.api.util.StringPrefixedSequenceIdGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "SUBJECT_MASTER")
+@Table(name = "GRADE_MASTER")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdDate", "updatedDate"}, allowGetters = true)
-public class Subject implements Serializable{
+public class Grade implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_seq")
 	@GenericGenerator(
-			name = "subject_seq",
+			name = "grade_seq",
 			strategy = "com.ay.wewin.api.util.StringPrefixedSequenceIdGenerator",
 			parameters = {
 					@Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
-					@Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "SUB"),
+					@Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "GRD"),
 					@Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%03d")
 			})
 	@Column(unique=true, nullable =false, length=6)
-	private String subjectId;
-	private String subjectName;
-	private String subjectDesc;
-	private String applicableExams;
+	private String gradeId;
+	private String gradeName;
+	private String gradeDesc;
+	private String gradeRemarks;
 	private boolean active;
 	private String createdId;
 	@CreatedDate
@@ -52,95 +52,134 @@ public class Subject implements Serializable{
 	private LocalDateTime updatedDate;
 	
 	
-	public Subject() {
+	public Grade() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	
-	public Subject(String subjectName, String subjectDesc, String applicableExams, boolean active,
-			String createdId, String updatedId) {
+
+
+	public Grade(String gradeName, String gradeDesc, String gradeRemarks, boolean active, String createdId,
+			String updatedId) {
 		super();
-		this.subjectName = subjectName;
-		this.subjectDesc = subjectDesc;
-		this.applicableExams = applicableExams;
+		this.gradeName = gradeName;
+		this.gradeDesc = gradeDesc;
+		this.gradeRemarks = gradeRemarks;
 		this.active = active;
 		this.createdId = createdId;
 		this.updatedId = updatedId;
 	}
 
+	
 	/** Methods for DropDownMaster to access via reflection - START **/
 	public String getDDMId()
 	{
-		return getSubjectId();
+		return getGradeId();
 	}
 	public String getDDMName()
 	{
-		return getSubjectName();
+		return getGradeName();
 	}
 	/** Methods for DropDownMaster to access via reflection - END **/
 
-	public String getSubjectId() {
-		return subjectId;
+
+	public String getGradeId() {
+		return gradeId;
 	}
-	public void setSubjectId(String subjectId) {
-		this.subjectId = subjectId;
+
+
+	public void setGradeId(String gradeId) {
+		this.gradeId = gradeId;
 	}
-	public String getSubjectName() {
-		return subjectName;
+
+
+	public String getGradeName() {
+		return gradeName;
 	}
-	public void setSubjectName(String subjectName) {
-		this.subjectName = subjectName;
+
+
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
 	}
-	public String getSubjectDesc() {
-		return subjectDesc;
+
+
+	public String getGradeDesc() {
+		return gradeDesc;
 	}
-	public void setSubjectDesc(String subjectDesc) {
-		this.subjectDesc = subjectDesc;
+
+
+	public void setGradeDesc(String gradeDesc) {
+		this.gradeDesc = gradeDesc;
 	}
-	public String getApplicableExams() {
-		return applicableExams;
+
+
+	public String getGradeRemarks() {
+		return gradeRemarks;
 	}
-	public void setApplicableExams(String applicableExams) {
-		this.applicableExams = applicableExams;
+
+
+	public void setGradeRemarks(String gradeRemarks) {
+		this.gradeRemarks = gradeRemarks;
 	}
+
+
 	public boolean isActive() {
 		return active;
 	}
+
+
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+
 	public String getCreatedId() {
 		return createdId;
 	}
+
+
 	public void setCreatedId(String createdId) {
 		this.createdId = createdId;
 	}
+
+
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
+
+
 	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
+
+
 	public String getUpdatedId() {
 		return updatedId;
 	}
+
+
 	public void setUpdatedId(String updatedId) {
 		this.updatedId = updatedId;
 	}
+
+
 	public LocalDateTime getUpdatedDate() {
 		return updatedDate;
 	}
+
+
 	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+
 	@Override
 	public String toString() {
-		return "Subject [subjectId=" + subjectId + ", subjectName=" + subjectName + ", subjectDesc=" + subjectDesc
-				+ ", applicableExams=" + applicableExams + ", active=" + active + ", createdId=" + createdId
-				+ ", createdDate=" + createdDate + ", updatedId=" + updatedId + ", updatedDate=" + updatedDate + "]";
+		return "Grade [gradeId=" + gradeId + ", gradeName=" + gradeName + ", gradeDesc=" + gradeDesc + ", gradeRemarks="
+				+ gradeRemarks + ", active=" + active + ", createdId=" + createdId + ", createdDate=" + createdDate
+				+ ", updatedId=" + updatedId + ", updatedDate=" + updatedDate + "]";
 	}
 	
 	
 	
-	
+
 }
