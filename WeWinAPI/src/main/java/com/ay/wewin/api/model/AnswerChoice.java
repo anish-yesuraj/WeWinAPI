@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -19,12 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "ANSWER_CHOICE")
+@IdClass(AnswerChoiceId.class)
 public class AnswerChoice implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ac_seq")
+	//@Id
+	/*@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ac_seq")
 	@GenericGenerator(
 			name = "ac_seq",
 			strategy = "com.ay.wewin.api.util.StringPrefixedSequenceIdGenerator",
@@ -32,8 +35,10 @@ public class AnswerChoice implements Serializable {
 					@Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
 					@Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "A"),
 					@Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%06d")
-			})
-	@Column(unique=true, nullable =false, length=7)
+			})*/
+	//@Column(unique=true, nullable =false, length=8)
+	@Id
+	@Column(nullable =false, length=1)
 	private String id;
 	private String text;
 	private String tip;
@@ -41,11 +46,14 @@ public class AnswerChoice implements Serializable {
 	private boolean active;
 	private String imagePath;
 	private String imageTip;
+	@Transient
+	private String imageSrc;	
 	
 	/** ManyToOne - Bidirectional (Mapped by 'question_id' in AnswerChoice) 
 	 *  JoinColumn - question_id will have 'id' from Question **/
+	@Id
 	@ManyToOne//(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "question_id")
+	@JoinColumn(name = "question_id", referencedColumnName = "id")
 	/** JSON - To ignore loading the 'AnswerChoices' again in the 'Question' Object **/
 	@JsonIgnoreProperties(value= {"answerChoices"}) 
 	private Question question;
@@ -130,10 +138,19 @@ public class AnswerChoice implements Serializable {
 		this.question = question;
 	}
 
+	public String getImageSrc() {
+		return imageSrc;
+	}
+
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
+
 	@Override
 	public String toString() {
 		return "AnswerChoice [id=" + id + ", text=" + text + ", tip=" + tip + ", result=" + result + ", active="
-				+ active + ", imagePath=" + imagePath + ", imageTip=" + imageTip + "]";
+				+ active + ", imagePath=" + imagePath + ", imageTip=" + imageTip + ", imageSrc=" + imageSrc
+				+ "]";
 	}
 
 }

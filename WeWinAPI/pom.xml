@@ -26,6 +26,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
 		<!-- Spring Boot Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -43,7 +49,14 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-
+		
+		<!-- For Working with Json Web Tokens (JWT) -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+				
 		<!-- JACKSON API for JSON -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -63,6 +76,11 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>27.0.1-jre</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.5</version>
 		</dependency>
 	</dependencies>
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -45,6 +47,7 @@ public class Question implements Serializable{
 			})
 	@Column(unique=true, nullable =false, length=7)
 	private String id;
+	private String grade;
 	private String subject;
 	private String topic;
 	private String level;
@@ -52,6 +55,10 @@ public class Question implements Serializable{
 	private String tip;
 	private boolean active;
 	private String imagePath;
+	//private String imageName;
+	//private String imageFile;
+	@Transient
+	private String imageSrc;
 	private String imageTip;
 	private String answerExplanation;
 	private String sourceId;
@@ -67,7 +74,7 @@ public class Question implements Serializable{
 	/** OneToMany - Bidirectional (Mapped by 'question_id' in AnswerChoice) 
 	 * - To Load 'AnswerChoices' while 'Question' is Loaded 
 	 * - To Persist 'AnswerChoices' while 'Question' is Persisted **/
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER) 
 	/** JSON - To ignore loading the 'Question' again in the 'AnswerChoice' Object **/
 	@JsonIgnoreProperties(value= {"question"}) 
 	private List<AnswerChoice> answerChoices = new ArrayList<AnswerChoice>();
@@ -77,10 +84,11 @@ public class Question implements Serializable{
 		super();
 	}
 
-	public Question(String subject, String topic, String level, String text, String tip, boolean active,
-			String imagePath, String imageTip, String answerExplanation, String sourceId, String examTag,
-			String createdId, String updatedId) {
+	public Question(String grade, String subject, String topic, String level, String text, String tip, boolean active,
+			String imagePath, String imageSrc, String imageTip, String answerExplanation, String sourceId,
+			String examTag, String createdId, String updatedId) {
 		super();
+		this.grade = grade;
 		this.subject = subject;
 		this.topic = topic;
 		this.level = level;
@@ -88,6 +96,7 @@ public class Question implements Serializable{
 		this.tip = tip;
 		this.active = active;
 		this.imagePath = imagePath;
+		this.imageSrc = imageSrc;
 		this.imageTip = imageTip;
 		this.answerExplanation = answerExplanation;
 		this.sourceId = sourceId;
@@ -96,14 +105,20 @@ public class Question implements Serializable{
 		this.updatedId = updatedId;
 	}
 
-
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 
 	public String getSubject() {
@@ -175,9 +190,17 @@ public class Question implements Serializable{
 	}
 
 	public void setAnswerChoices(List<AnswerChoice> answerChoices) {
-		for (AnswerChoice choice:answerChoices)
+		
+//		IntStream.range(0, answerChoices.size())
+//				.forEach(i -> {
+//					answerChoices.get(i).setQuestion(this);
+//					answerChoices.get(i).setId(String.valueOf((char)(i + 'A')));
+//					});
+		
+		for (int i=0; i<answerChoices.size(); i++)
 		{
-			choice.setQuestion(this);
+			answerChoices.get(i).setId(String.valueOf((char)(i + 'A')));
+			answerChoices.get(i).setQuestion(this);
 		}
 		this.answerChoices = answerChoices;
 	}
@@ -238,13 +261,22 @@ public class Question implements Serializable{
 		this.updatedDate = updatedDate;
 	}
 
+	public String getImageSrc() {
+		return imageSrc;
+	}
+
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
+
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", subject=" + subject + ", topic=" + topic + ", level=" + level + ", text="
-				+ text + ", tip=" + tip + ", active=" + active + ", imagePath=" + imagePath + ", imageTip=" + imageTip
-				+ ", answerExplanation=" + answerExplanation + ", sourceId=" + sourceId + ", examTag=" + examTag
-				+ ", createdId=" + createdId + ", createdDate=" + createdDate + ", updatedId=" + updatedId
-				+ ", updatedDate=" + updatedDate + ", answerChoices=" + answerChoices + "]";
+		return "Question [id=" + id + ", grade=" + grade + ", subject=" + subject + ", topic=" + topic + ", level="
+				+ level + ", text=" + text + ", tip=" + tip + ", active=" + active + ", imagePath=" + imagePath
+				+ ", imageSrc=" + imageSrc + ", imageTip=" + imageTip + ", answerExplanation=" + answerExplanation
+				+ ", sourceId=" + sourceId + ", examTag=" + examTag + ", createdId=" + createdId + ", createdDate="
+				+ createdDate + ", updatedId=" + updatedId + ", updatedDate=" + updatedDate + ", answerChoices="
+				+ answerChoices + "]";
 	}
 
 
